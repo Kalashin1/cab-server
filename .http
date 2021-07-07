@@ -1,0 +1,22 @@
+POST http://localhost:3000/signup
+Content-Type: application/json
+
+{
+  "displayName": "Kinanee Samson",
+  "email": "kinaneesamsonjohn@gmail.com",
+  "password": "Test1234",
+  "phoneNumber": "+2348149793913"
+}
+
+###
+POST http://localhost:3000/login
+Content-Type: application/json
+
+{
+  "email": "kinaneesamsonjohn@gmail.com",
+  "password": "Test1234"
+}
+
+GET http://localhost:3000/logout
+
+GET http://localhost:3000/current-user
