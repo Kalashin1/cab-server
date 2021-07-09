@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { singupWithEmailAndPassword, login, currentUser, logout } from '../controllers/auth'
+import { singupWithEmailAndPassword, login, currentUser, logout, isUserOnline } from '../controllers/auth'
+import { editProfile } from '../controllers/user';
 const router = Router()
 
 router.get('/', (_req:Request, res: Response) => {
@@ -11,4 +12,6 @@ router.post('/login', login)
 router.get('/logout', logout)
 router.get('/current-user', currentUser)
 
+
+router.post('/edit-profile/:uid', isUserOnline, editProfile)
 export default router

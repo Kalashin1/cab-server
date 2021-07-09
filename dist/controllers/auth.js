@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.currentUser = exports.logout = exports.login = exports.singupWithEmailAndPassword = void 0;
+exports.isUserOnline = exports.currentUser = exports.logout = exports.login = exports.singupWithEmailAndPassword = void 0;
 const user_1 = __importDefault(require("../data/models/user"));
 exports.singupWithEmailAndPassword = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, displayName, phoneNumber } = req.body;
@@ -52,6 +52,16 @@ exports.currentUser = (_req, res) => __awaiter(void 0, void 0, void 0, function*
     const loggedInUser = yield user.currentUser();
     if (loggedInUser) {
         res.json(loggedInUser);
+    }
+    else {
+        res.status(400).json({ message: 'User is Not logged in' });
+    }
+});
+exports.isUserOnline = (_req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = new user_1.default();
+    const loggedInUser = yield user.currentUser();
+    if (loggedInUser) {
+        next();
     }
     else {
         res.status(400).json({ message: 'User is Not logged in' });

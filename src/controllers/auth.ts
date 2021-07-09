@@ -1,5 +1,5 @@
 
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import User from '../data/models/user'
 
 export const singupWithEmailAndPassword = async (req: Request, res: Response) => {
@@ -42,5 +42,15 @@ export const currentUser = async (_req: Request, res: Response) => {
     res.json(loggedInUser)
   } else {
     res.status(400).json({ message: 'User is Not logged in'})
+  }
+}
+
+export const isUserOnline = async (_req: Request, res: Response, next: NextFunction) => {
+  const user = new User()
+  const loggedInUser = await user.currentUser()
+  if (loggedInUser) {
+    next()
+  } else {
+    res.status(400).json({ message: 'User is Not logged in' })
   }
 }

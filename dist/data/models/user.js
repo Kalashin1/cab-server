@@ -68,6 +68,11 @@ class User {
             yield firebase_settings_1.auth.signOut();
         });
     }
+    /**
+     * @function currentUser gets the current logged in user
+     * @returns currentUser is they are logged in else
+     * @returns null
+     */
     currentUser() {
         return __awaiter(this, void 0, void 0, function* () {
             const user = firebase_settings_1.auth.currentUser;
@@ -81,6 +86,26 @@ class User {
             else {
                 return null;
             }
+        });
+    }
+    /**
+     * @function editProfile edits the users profile
+     * @param obj the fields with wich we want to populate the user
+     * @param uid the users id
+     * @returns the updated user
+     */
+    editProfile(obj, uid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            // *  Get a reference to the user Reference
+            const docRef = firebase_settings_1.db.collection('users').doc(uid);
+            // * Update that reference
+            yield docRef.update(Object.assign({}, obj));
+            // * Retrieve the updated document
+            const editUserRef = yield docRef.get();
+            // * Get the actual data and append the uid to it and return it
+            const user = editUserRef.data();
+            user.uid = uid;
+            return user;
         });
     }
 }

@@ -1,9 +1,9 @@
 import { db, auth } from '../../firebase-settings';
-import user, { newUser } from '../interface/user'
+import  UserContract, { newUser, user, role } from '../interface/user'
 /**
  * @class User encapsulates all attributes and functionality of a user
  */
-export default class User implements user{
+export default class User implements UserContract{
    /**
     * This function actually signs in the user
     * @function signupWithEmailAndPassword expects a an Object which is the user
@@ -52,7 +52,11 @@ export default class User implements user{
   async logout() {
     await auth.signOut()
   }
-
+/**
+ * @function currentUser gets the current logged in user
+ * @returns currentUser is they are logged in else
+ * @returns null
+ */
   async currentUser() {
     const user = auth.currentUser;
     if (user !== null) {
@@ -69,4 +73,26 @@ export default class User implements user{
       return null;
     } 
   }
+  /**
+   * @function editProfile edits the users profile
+   * @param obj the fields with wich we want to populate the user
+   * @param uid the users id
+   * @returns the updated user
+   */
+  async editProfile(obj: user<role>, uid: string) {
+    // *  Get a reference to the user Reference
+    const docRef = db.collection('users').doc(uid);
+    // * Update that reference
+    await docRef.update({
+      ...obj
+    })
+    // * Retrieve the updated document
+    const editUserRef = await docRef.get()
+    // * Get the actual data and append the uid to it and return it
+    const user = editUserRef.data()
+    user.uid = uid
+    return user
+  }
+
 }
+
