@@ -27,7 +27,7 @@ exports.singupWithEmailAndPassword = (req, res) => __awaiter(void 0, void 0, voi
 });
 exports.login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    console.log(email, password);
+    // console.log(email, password);
     try {
         const user = new user_1.default();
         const loggedInUser = yield user.login(email, password);

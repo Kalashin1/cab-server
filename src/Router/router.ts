@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { singupWithEmailAndPassword, login, currentUser, logout, isUserOnline } from '../controllers/auth'
-import { editProfile } from '../controllers/user';
+import { createPost, deletePost, editPost, editProfile } from '../controllers/user';
 const router = Router()
 
 router.get('/', (_req:Request, res: Response) => {
@@ -14,4 +14,8 @@ router.get('/current-user', currentUser)
 
 
 router.post('/edit-profile/:uid', isUserOnline, editProfile)
+
+router.post('/post/create', createPost)
+router.post('/post/edit', editPost)
+router.post('/post/delete', deletePost)
 export default router

@@ -15,7 +15,7 @@ export const singupWithEmailAndPassword = async (req: Request, res: Response) =>
 
 export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body
-  console.log(email, password);
+  // console.log(email, password);
   try {
     const user = new User();
     const loggedInUser = await user.login(email, password);

@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const firebase_settings_1 = require("../../firebase-settings");
 /**
  * @class User encapsulates all attributes and functionality of a user
+ * @implements UserContract that contains the requirements of the user
  */
 class User {
     /**
@@ -70,8 +71,8 @@ class User {
     }
     /**
      * @function currentUser gets the current logged in user
-     * @returns currentUser is they are logged in else
-     * @returns null
+     * @returns currentUser is they are logged in
+     * @returns null if the user is not logged in
      */
     currentUser() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -106,6 +107,44 @@ class User {
             const user = editUserRef.data();
             user.uid = uid;
             return user;
+        });
+    }
+    makePost(postObj) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { uid } = postObj;
+            const postRef = yield firebase_settings_1.db.collection('posts').add(postObj);
+            const postId = postRef.id;
+            const userRef = yield firebase_settings_1.db.collection('users').doc(uid);
+            let userPosts = yield (yield userRef.get()).data().posts;
+            userPosts = [...userPosts, postId];
+            yield userRef.update({
+                posts: userPosts
+            });
+            postObj.id = postId;
+            return postObj;
+        });
+    }
+    editPost(postObj) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id } = postObj;
+            const postRef = firebase_settings_1.db.collection('posts').doc(id);
+            yield postRef.update(Object.assign({}, postObj));
+            return postObj;
+        });
+    }
+    deletePost(postObj) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { id, uid } = postObj;
+            const userRef = firebase_settings_1.db.collection('users').doc(uid);
+            const postRef = firebase_settings_1.db.collection('posts').doc(id);
+            yield postRef.delete();
+            let user = yield (yield userRef.get()).data();
+            let userPosts = user.posts;
+            let updatedUserPosts = userPosts.filter((p) => p !== id);
+            // userPosts = [...updatedUserPosts]
+            yield userRef.update({
+                posts: [...updatedUserPosts]
+            });
         });
     }
 }

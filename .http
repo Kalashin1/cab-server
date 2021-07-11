@@ -17,7 +17,11 @@ Content-Type: application/json
   "password": "Test1234"
 }
 
+###
+
 GET http://localhost:3000/logout
+
+###
 
 GET http://localhost:3000/current-user
 
@@ -34,5 +38,58 @@ Content-Type: application/json
   "preferred_gender": "female",
   "gender": "male",
   "interests": ["hook-up", "besty", "friend"],
-  "role": "user"
+  "role": "user",
+  "posts": []
+}
+
+###
+
+POST http://localhost:3000/post/create
+Content-Type: application/json
+
+{
+  "uid": "qEIXKBsvz4WhCyrYR6WkpNgmunx1",
+  "date": "08-10-2021",
+  "tags": ["hookup-only"],
+  "media": {
+    "type": "mp3",
+    "src": "link_from_storage_bucket"
+  },
+  "text": "this is the body of the post"
+}
+
+
+POST http://localhost:3000/post/edit
+Content-Type: application/json
+
+{
+  "uid": "qEIXKBsvz4WhCyrYR6WkpNgmunx1",
+  "date": "08-10-2021",
+  "tags": [
+    "hookup-only"
+  ],
+  "media": {
+    "type": "mp3",
+    "src": "link_from_storage_bucket"
+  },
+  "text": "we edited some bloody content in the post",
+  "id": "eQzyCQ5tRY9a1dd61uXi"
+}
+
+
+POST http://localhost:3000/post/delete
+Content-Type: application/json
+
+{
+  "uid": "qEIXKBsvz4WhCyrYR6WkpNgmunx1",
+  "date": "08-10-2021",
+  "tags": [
+    "hookup-only"
+  ],
+  "media": {
+    "type": "mp3",
+    "src": "link_from_storage_bucket"
+  },
+  "text": "we edited some bloody content in the post",
+  "id": "h59WLCJccwwdrqpLqVe7"
 }

@@ -1,3 +1,4 @@
+import { Post } from "./post"
 
 /**
  * @interface User placeholder interface, extends other smaller interfaces
@@ -23,7 +24,7 @@ export type gender = 'male' | 'female'
 /**
  * @typedef role ensures that the role can only be 'admin' or 'user'
  */
-export type role = 'admin' | 'user'
+export type role = 'admin' | 'user' | 'superAdmin'
 /**
  * @typedef user is the type definition for what a real user who is currently loggedIn
  */
@@ -39,7 +40,8 @@ export type user <Role extends role> = {
   preferred_gender?: gender,
   gender: gender,
   interests?: string[],
-  role: Role
+  role: Role,
+  posts: Post[] | string[]
 }
 /**
  * @interface auth Is responsible for authentication service.
@@ -73,7 +75,7 @@ export interface auth {
  * @interface LoggedInUser the loggedInUser contract
  * @extends editProfile
  */
-export interface LoggedInUser extends editProfile {
+export interface LoggedInUser extends editProfile, PostContract {
   
 }
 
@@ -87,5 +89,14 @@ export interface editProfile {
    * @param userId is the id of the user whose profile we want to edit
    * @returns the edit profile of the user
    */
-  editProfile(obj: user<role>, userId: string):any
+}
+
+
+  /**
+ * @interface makePost allows the user to make a post
+ */
+export interface PostContract {
+  makePost: (postObj: Post) => Promise<Post>
+  editPost: (postObj: Post) => Promise<Post>
+  deletePost: (postObj: Post) => Promise<void>
 }

@@ -12,5 +12,8 @@ router.post('/login', auth_1.login);
 router.get('/logout', auth_1.logout);
 router.get('/current-user', auth_1.currentUser);
 router.post('/edit-profile/:uid', auth_1.isUserOnline, user_1.editProfile);
+router.post('/post/create', user_1.createPost);
+router.post('/post/edit', user_1.editPost);
+router.post('/post/delete', user_1.deletePost);
 exports.default = router;
 //# sourceMappingURL=router.js.map
